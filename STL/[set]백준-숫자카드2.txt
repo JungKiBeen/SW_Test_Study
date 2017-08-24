@@ -1,0 +1,74 @@
+
+#include <iostream>
+#include<stdio.h>
+#include<set>
+#include<vector>
+
+using namespace std;
+
+
+int main()
+{
+	int n;
+	set<int> s;	
+	vector<pair<int, int>> v; // {x, cnt}
+
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++)
+	{
+		int x;
+		scanf("%d", &x);
+		
+		pair<set<int>::iterator, bool> res = s.insert(x);
+
+		if (!res.second)
+		{
+			bool flag = false;	// 존재하면 true
+			for (int i = 0; i < v.size(); i++)
+			{
+				if (x == v[i].first)
+				{
+					flag = true;
+					v[i].second++;
+					
+				}
+			}
+
+			if(flag == false ) v.push_back(make_pair(x, 2));
+		}
+	}
+	int m;
+	cin >> m;
+	
+	for (int i = 0; i < m; i++)
+	{
+		int y;
+		scanf("%d", &y);
+
+		int temp = s.count(y);
+
+		if (temp == 0)
+		{
+			printf("%d ", temp);
+		}
+
+		else
+		{
+			bool flag = false;	// 존재하면 true
+			for (int i = 0; i < v.size(); i++)
+			{
+				if (y == v[i].first)
+				{
+					flag = true;
+					printf("%d ", v[i].second);
+
+				}
+			}
+
+			if (flag == false) printf("%d ", 1);
+
+		}
+	}
+
+}

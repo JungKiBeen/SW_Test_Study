@@ -1,0 +1,41 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<vector>
+using namespace std;
+
+int a[10000 + 10];	int sol;
+bool check[10000 + 10];
+
+
+int main()
+{
+	int m, n;
+
+	cin >> n >> m;
+
+	for (int i = 1; i <= n; i++)
+	{
+		scanf("%d", &a[i]);	// a[1..n]
+
+		if (a[i] > m)
+		{
+			check[i] = true;
+		}
+	}
+
+	int sol = 0;
+	for (int i = 1; i <= n; i++)
+	{
+		int sum = 0;
+		for (int j = i; j <= n; j++)
+		{
+			sum += a[j];	// i to n
+			if (check[j])	break;
+			if (m == sum)	sol++;
+		}
+	}
+
+	cout << sol;
+	return 0;
+}

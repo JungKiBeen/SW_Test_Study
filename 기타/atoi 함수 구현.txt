@@ -1,0 +1,51 @@
+#include <iostream>
+#include <algorithm>
+#include<string>
+#include<cctype>
+#include <ctime>
+#include <cstdlib>
+#include<cstring>
+using namespace std;
+
+
+int _atoi(string str)
+{
+	int len = str.length();
+	int start = 0;
+	
+	int is_plus = 1;
+	if (str[0] == '-')
+	{
+		start = 1;
+		is_plus = -1;
+	}
+
+	int offset = 1;
+	int num = 0;
+	for (int i = len-1 ; i >= start; i--)
+	{
+		if (!isdigit(str[i]))
+		{
+			printf("숫자 형태가 아닙니다");
+			return -1;
+		}
+
+		num += (str[i] - '0') * offset;
+		offset *= 10;
+	}
+
+	return num * is_plus;
+}
+
+int main(void)
+{
+	while(true)
+	{
+		string str;
+		cout << "문자열 입력 : ";
+		cin >> str;
+		printf("%d\n", _atoi(str));
+	}
+
+	return 0;
+}

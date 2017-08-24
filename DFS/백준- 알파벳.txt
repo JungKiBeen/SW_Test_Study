@@ -1,0 +1,76 @@
+/*
+	1. back 조건은, candi가 존재 하지 않을 때이다.
+	  4방향의 xx,yy에 대하여, visit == false, alpha == false이면 candi 벡터에 추가한다.
+	  이 candi를 for문에서 다시 재활용 한다.
+
+	2. 나는 alpha 배열의 크기를 크게 잡고, alpha[mat[0][0]] = true; 이런식으로 구성 했지만.
+	    alpha[mat[0][0] - 'A'] = true; 이런식으로 구성해도 된다.
+
+	3. 사실 로직상, visit이 필요 없긴하지만, 일반적인 경우에는 이전 단계를 역 방문하지 않도록 visit을 선언해줘야 한다.
+*/
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+int sol = 1;		int r, c;
+char mat[20][20];	bool visit[20][20];		bool alpha[250];
+int dr[] = {-1, 0, 1, 0};	int dc[] = { 0, 1, 0 ,-1 };
+
+bool check(int &x, int &y, vector<int> & candi)
+{
+
+	for (int i = 0; i < 4; i++)
+	{
+		int xx = x + dr[i];		int yy = y + dc[i];
+
+		if ((xx < 0) || (xx > r-1) || (yy < 0) || (yy > c-1))	continue;
+		
+		if (visit[xx][yy] == 0 && alpha[mat[xx][yy]] == 0)
+		{
+			candi.push_back(i);
+		}
+	}
+
+	return candi.empty();
+}
+
+void DFS(int x, int y, int cnt)
+{
+	vector<int> candi;
+	if (check(x, y,candi))	// 후보자가 없으면 max와 비교
+	{
+		sol = max(sol, cnt);
+		return;
+	}
+
+	for (int i = 0; i < (int)candi.size(); i++)
+	{
+		int xx = x + dr[candi[i]];	int yy = y + dc[candi[i]];
+		
+		alpha[mat[xx][yy]] = true;	visit[xx][yy] = true;
+		DFS(xx, yy, cnt + 1);
+		alpha[mat[xx][yy]] = false;	visit[xx][yy] = false;
+	}
+}
+
+int main()
+{
+	//freopen("a.txt", "r", stdin);
+	cin >> r >> c;
+	for (int i = 0; i < r; i++)
+	{
+		for (int j = 0; j < c; j++)
+		{
+			scanf(" %c", &mat[i][j]);
+		}
+	}
+
+	alpha[mat[0][0]] = true;	visit[0][0] = true;
+	DFS(0, 0, 1);
+
+	cout << sol;
+	return 0;
+}

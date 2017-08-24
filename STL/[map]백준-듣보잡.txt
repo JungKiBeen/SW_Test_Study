@@ -1,0 +1,47 @@
+
+#include <iostream>
+#include<string>
+#include<stdio.h>
+#include<string>
+#include<map>
+
+using namespace std;
+
+
+int main()
+{
+	//freopen("a.txt", "r", stdin);
+	map<string, bool> a;
+	map<string, bool> b;
+
+
+	int n, m;
+	cin >> n >> m;
+	scanf("\n");
+
+	for (int i= 0; i < n; i++)
+	{
+		string str;
+		cin >> str;
+		a[str] = true;
+	}
+	
+	int cnt = 0;
+	for (int i= 0; i < m; i++)
+	{
+		string str;
+		cin >> str;
+		if (a[str] == true)
+		{
+			b[str] = true;
+			cnt++;
+		}
+	}
+
+	cout << cnt << '\n';
+	for (map<string, bool>::iterator it = b.begin(); it != b.end(); it++)
+	{
+		cout << it->first << '\n';
+	}
+
+}

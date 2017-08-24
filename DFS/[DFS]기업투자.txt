@@ -1,0 +1,64 @@
+#include <stdio.h>
+ 
+int sol_arr[20];
+int invest_arr[20];
+int M,N;
+int company[20][1+300];
+int sol;
+ 
+void Invest(int n,int money,int benefit)
+{
+      int i;
+ 
+      if(n>=N)
+      {
+            if(sol<benefit)
+            {
+                  sol = benefit;
+                  for(i=0;i<N;i++)
+                  {
+                        sol_arr[i] = invest_arr[i];
+                  }
+            }
+            return;
+      }
+ 
+      for(i=0;i<=money;i++)
+      {
+            invest_arr[n] = i;
+            Invest(n+1,money-i,benefit+company[n][i]);
+            invest_arr[n] = 0;
+      }
+}
+ 
+void Input_Data(void)
+{
+      int i,j,m;
+ 
+      scanf("%d %d",&M,&N);
+      for(i=0;i<M;i++)
+      {
+            scanf("%d",&m);
+            for(j=0;j<N;j++)
+            {
+                  scanf("%d",&company[j][m]);
+            }
+      }
+}
+ 
+int main(void)
+{
+      int i;
+ 
+      Input_Data();
+ 
+      Invest(0,M,0);
+ 
+      printf("%d\n",sol);
+      for(i=0;i<N;i++)
+      {
+            printf("%d ",sol_arr[i]);
+      }
+ 
+      return 0;
+}

@@ -1,0 +1,60 @@
+/*
+	1.이친수와 유사하지만, 이친수는 뒤에 올 수 있는 수가 0또는 1이었기 때문에 1차원으로 풀 수 있었지만,
+	이 문제는 올 수 있는 수가 0부터 9까지기 때문에 2차원으로 풀어야 한다.
+
+	2. d[1..n][0..9]에서 d[i][j] 는 길이가 i이고 끝자리가 j인 계단수의 갯수
+	3. d[i][j] = d[i-1][j-1] + d[i-1][j+1]
+	   단 j ==0이면 d[i][j] = d[i-1][j+1]
+	      j ==9이면 d[i][j] = d[i-1][j-1]
+*/
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+#define M 1000000000
+
+int d[101][10];
+
+int main()
+{
+	int n;
+	cin >> n;
+
+	d[1][0] = 0;
+	for (int i = 1; i <= 9; i++)
+	{
+		d[1][i] = 1;
+	}
+
+	for (int i = 2; i <= n; i++)
+	{
+		for (int j = 0; j <= 9; j++)
+		{
+			if (j == 0)
+			{
+				d[i][j] = d[i - 1][j + 1] % M;	continue;
+			}
+
+			if (j == 9)
+			{
+				d[i][j] = d[i - 1][j - 1] % M;	continue;
+
+			}
+
+			d[i][j] = (d[i - 1][j - 1] + d[i - 1][j + 1]) % M;
+		}
+	}
+
+	int sol = 0;
+
+	for (int j = 0; j <= 9 ;j++)
+	{
+		sol = (sol + d[n][j]) % M;
+	}
+
+	cout << sol;
+	return 0;
+}

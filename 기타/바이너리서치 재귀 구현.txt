@@ -1,0 +1,39 @@
+#include <iostream>
+#include <algorithm>
+#include<string>
+#include <ctime>
+#include <cstdlib>
+#include<cstring>
+using namespace std;
+
+int arr[] = { 2,3,4,103,72,2734,3,4 };
+
+int my_bsearch(int* arr, int start, int end, int key)
+{
+	if (start > end)
+		return -1;
+
+	int mid = (start + end) / 2;
+
+	if (key < arr[mid])
+	{
+		return my_bsearch(arr, start, mid - 1, key);
+	}
+
+	else if (key > arr[mid])
+	{
+		return my_bsearch(arr, mid + 1, end, key);
+	}
+
+	else
+	{
+		return mid;
+	}
+}
+
+int main(void)
+{
+	cout << my_bsearch(arr, 0, (sizeof(arr) / sizeof(int)) - 1, 2734);
+
+	return 0;
+}

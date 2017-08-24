@@ -1,0 +1,124 @@
+#include <iostream>
+#include <algorithm>
+#include<string>
+#include<list>
+#include<queue>
+#include<vector>
+#include<stack>
+
+#include<cmath>
+#include<cctype>
+#include <ctime>
+#include <cstdlib>
+#include<cstring>
+#include<climits>
+
+using namespace std;
+
+vector<list<int>> adj;
+
+void make_graph(vector<string>& words)
+{
+	adj = vector<list<int>>(26);
+
+	for (int j = 1; j < (int)words.size(); ++j)
+	{
+		int i = j - 1;
+		int len = min(words[i].size(), words[j].size());
+
+		for (int k = 0; k < len; ++k)
+		{
+			if (words[i][k] != words[j][k])
+			{
+				int a = words[i][k] - 'a';
+				int b = words[j][k] - 'a';
+				adj[a].push_back(b);
+				break;
+			}
+		}
+	}
+}
+
+void dfs(int n, vector<int> &order, vector<bool>& visit)
+{
+	visit[n] = true;
+
+	list<int> ::iterator it;
+	for (it = adj[n].begin(); it != adj[n].end(); ++it)
+	{
+		if (!visit[*it])
+			dfs(*it, order, visit);
+	}
+
+	order.push_back(n);
+}
+
+bool topo_sort(vector<int> &order, vector<bool> &visit)
+{
+
+	for (int i = 25; i >= 0; i--)
+		if (!visit[i])
+			dfs(i, order, visit);
+
+	reverse(order.begin(), order.end());
+
+	for (int i = 0; i < (int)order.size(); i++)
+	{
+		for (int j = i + 1; j < (int)order.size(); j++)
+		{
+			list<int> ::iterator it;
+			for (it = adj[order[j]].begin(); it != adj[order[j]].end(); ++it)
+				if (order[i] == *it)
+				{
+					return false;
+				}
+		}
+	}
+
+	return true;
+}
+
+int main(void)
+{
+	freopen("input.txt", "r", stdin);
+	std::ios_base::sync_with_stdio(false);
+	
+	int c;
+	cin >> c;
+
+	while (c--)
+	{
+		int n;
+		cin >> n;
+		vector<string> words;
+		vector<int> order;
+		vector<bool> visit = vector<bool>(26, false);
+
+		for (int i = 0; i < n; i++)
+		{
+			string temp;
+			cin >> temp;
+			words.push_back(temp);
+		}
+
+		make_graph(words);
+
+
+		if (topo_sort(order,visit))
+		{
+			for (int i = 0; i < (int)order.size(); ++i)
+			{
+				printf("%c", order[i] + 'a');
+			}
+		}
+
+		else
+		{
+			cout << "INVALID HYPOTHESIS";
+		}
+
+		puts("");
+	}
+
+	return 0;
+}

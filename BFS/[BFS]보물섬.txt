@@ -1,0 +1,65 @@
+#include <stdio.h>
+
+int ROW, COL, MAXT;
+char map[50+50][50+50]; int visited[50 + 50][50 + 50];
+int dr[] = { -1, 1, 0, 0 };	int dc[] = { 0, 0, -1, 1 };
+
+typedef struct
+{
+	int r, c, t;
+} elem;
+elem que[50 * 50 * 50 * 50];	int ep, dp;
+
+void InputData()
+{
+	int i, j;
+	for (i = 0; i < 100; i++) for (j = 0; j < 100; j++)	map[i][j] = 'W';
+	scanf("%d %d", &ROW, &COL);
+	for (i = 1; i <= ROW; i++)	scanf("%s", &map[i][1]);
+}
+
+int BFS(int x, int y)
+{
+	int i, j, rr, cc;
+	elem q;
+
+	for (i = 0; i < 100; i++)	for (j = 0; j < 100; j++)	visited[i][j] = 0;
+	que[ep].r = x;	que[ep].c = y;	que[ep++].t = 0;
+	visited[x][y] = 1;
+	while (dp<ep)
+	{
+		q.r = que[dp].r;	q.c = que[dp].c;	q.t = que[dp++].t;
+		for (i = 0; i < 4; i++)
+		{
+			rr = q.r + dr[i];	cc = q.c + dc[i];
+
+			if (rr < 1 || rr > ROW || cc < 1 || cc > COL)	continue;
+			if (visited[rr][cc] == 0 && map[rr][cc] == 'L')
+			{
+				visited[rr][cc] = 1;	que[ep].r = rr;		que[ep].c = cc;		que[ep++].t = q.t + 1;
+			}
+		}
+	}
+	return q.t;
+}
+
+int main(void)
+{
+	int i, j,sol;
+	InputData();
+	for (i = 1; i <= ROW; i++)
+	{
+		for (j = 1; j <= COL; j++)
+		{
+			if (map[i + 1][j] == 'L' && map[i - 1][j] == 'L') continue;
+			if (map[i][j+1] == 'L' && map[i][j-1] == 'L') continue;
+			if (map[i][j] == 'L')
+			{
+				sol = BFS(i, j);
+				if (sol > MAXT)		MAXT = sol;
+			}
+		}
+	}
+	printf("%d", MAXT);
+	return 0;
+}

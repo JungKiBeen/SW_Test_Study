@@ -1,0 +1,33 @@
+
+#include <iostream>
+#include <stdio.h>
+
+#include<algorithm>
+#include <string>
+
+using namespace std;
+
+int main() 
+{
+	//freopen("a.txt", "r", stdin);
+	string s;
+
+	cin >> s;
+
+	for (int i = 'a'; i <= 'z'; i++)
+	{
+		string::iterator it = find(s.begin(), s.end(), i);
+
+		if (it == s.end())
+		{
+			printf("%d ", -1);
+		}
+
+		else
+		{
+			printf("%d ", it - s.begin());
+		}
+	}
+	
+	return 0;
+}

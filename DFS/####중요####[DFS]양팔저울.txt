@@ -1,0 +1,57 @@
+/* n+1 에서 n번째 추의 무게가 더해지기 때문에 n+1 단계에서 L==R 조건을 검사해야함*/
+
+/* Tree Depth 는 3^12 * 5 이다*/
+/* L, R 을 DFS의 지역변수로 사용해야 한다 */
+/* 한시간 소요*/
+/* 경우의 수를 모두 찾는 것이므로 가지치기를 할 수 없음*/
+/* Tree Depth 는 3^12 * 5 이다*/
+/* L, R 을 DFS의 지역변수로 사용해야 한다 */
+
+
+#include <stdio.h>
+int CN, BN, L, R; char flag; int CG[12 + 10], BG[5 + 10];
+
+void InputData()
+{
+	int i;
+	scanf("%d", &CN);
+	for (i = 1; i <= CN; i++)	scanf("%d", &CG[i]);
+
+	scanf("%d", &BN);
+	for (i = 1; i <= BN; i++)	scanf("%d", &BG[i]);
+}
+
+int DFS(int n, int L, int R)
+{
+	if (L == R) { flag = 'Y';	return; }	/* 가지치기 */
+
+	if (n > CN)
+	{
+		return; 
+	}
+
+
+	DFS(n + 1, L, R + CG[n]);
+	if (flag == 1)	return;
+
+	DFS(n + 1, L + CG[n], R);
+	if (flag == 1)	return;
+
+	DFS(n + 1, L, R);
+	if (flag == 1)	return;
+}
+
+
+int main(void)
+{
+	int i;
+	InputData();
+	for (i = 1; i <= BN; i++)
+	{
+		flag = 'N';
+		DFS(1, BG[i], 0);
+		printf("%c ", flag);
+	}
+	
+	return 0;
+}

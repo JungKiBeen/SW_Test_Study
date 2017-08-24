@@ -1,0 +1,83 @@
+
+#include <iostream>
+#include<stdio.h>
+#include <list>
+
+using namespace std;
+
+int main()
+{
+	int n;
+
+	cin >> n;
+
+	list<pair<int,int>> a;
+	
+	for (int i = 1 ; i <= n ; i++)
+	{
+		int x;
+		cin >> x;
+		a.push_back({ i, x });
+	}
+
+	auto it = a.begin();
+
+	while (true)
+	{
+		int kth = it->first;
+		int val = it->second;
+		cout << kth << ' ';
+		
+		if (val > 0)
+		{
+			auto temp = it;
+			temp++;
+			if (temp == a.end())
+			{
+				temp = a.begin();
+			}
+			a.erase(it);
+
+			if (a.empty()) break;
+			
+			it = temp;
+			val--;
+			while (val--)
+			{
+				it++;
+
+				if (it == a.end())
+				{
+					it = a.begin();
+				}
+			}
+		}
+
+		else
+		{
+			val = -val;
+			auto temp = it;
+			if (temp == a.begin())
+			{
+				temp = a.end();
+			}
+
+			temp--;
+			a.erase(it);
+
+			if (a.empty()) break;
+
+			it = temp;
+			val--;
+			while (val--)
+			{
+				if (it == a.begin())
+				{
+					it = a.end();
+				}
+				it--;
+
+			}
+		}
+	}
+}

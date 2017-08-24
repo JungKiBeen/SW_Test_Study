@@ -1,0 +1,41 @@
+/*
+
+n-1 부터 1까지: 자기보다 큰 값이 앞에 있으면 i가 답이됨.
+
+*/
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+int book[300000+10];
+int pos[300000+10];
+
+
+int main()
+{
+	//freopen("a.txt", "r", stdin);
+	int n;
+	cin >> n;
+	
+	for (int i = 0; i < n; i++)
+	{
+		scanf("%d", &book[i]);
+		pos[book[i]] = i;
+	}
+	// book 번호는 1..n
+	for (int i = n-1; i >= 1; i--)			// n-1 부터 1까지: 자기보다 큰 값이 앞에 있으면 i가 답이됨.
+	{
+		if (pos[i + 1] < pos[i])
+		{
+			cout << i;
+			return 0;
+		}
+	}
+
+	cout << n;
+
+	return 0;
+}

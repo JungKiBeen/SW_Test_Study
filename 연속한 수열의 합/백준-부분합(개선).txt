@@ -1,0 +1,58 @@
+O(N)으로 개선
+
+1524MS -> 12MS 로 줄었다;
+
+
+#include<iostream>
+#include<cstdio>
+#include<limits>
+#include<algorithm>
+using namespace std;
+
+int a[100000+10];
+
+int main()
+{
+	int n;	long long s;
+	cin >> n >> s;
+
+	for (int i = 0; i < n; i++)
+	{
+		scanf("%d", &a[i]);	// a[0..n-1]
+	}
+
+	int sol = numeric_limits<int> ::max();
+	int left, right;
+	left = right = 0;
+	long long sum = a[0];
+
+	while (right < n)
+	{
+		if (sum < s)
+		{
+			right++;
+			sum += a[right];
+		}
+
+		else
+		{
+			sol = min(sol, right - left + 1);
+			
+			if (left == right)
+			{
+				right++;
+				sum += a[right];
+			}
+
+			else
+			{
+				sum -= a[left];
+				left++;
+			}
+		}
+	}
+
+	if (sol == numeric_limits<int> ::max())	cout << 0;
+	else cout << sol;
+	return 0;
+}

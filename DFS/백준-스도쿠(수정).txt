@@ -1,0 +1,81 @@
+/*
+	1. 최악의 경우라도 시간복잡도가 9^81은 되지 않는다.
+	일단, check함수 가지치기에 의해 9가지 경우의 수중 많이 잘린다.
+
+	2. 스도쿠가 완성되기 위해서는 최소 절반 이상은 채워져 있어야 한다.
+
+*/
+
+
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+using namespace std;
+
+bool cr[10][10];	bool cc[10][10];	bool cs[10][10];
+int a[10][10];
+
+
+int square(int i, int j)
+{
+	return (i / 3) * 3 + (j / 3);
+}
+
+void DFS(int n)
+{
+	if (n == 81)
+	{
+		for (int i = 0; i<9; i++) {
+			for (int j = 0; j<9; j++) {
+				cout << a[i][j] << ' ';
+			}
+			cout << '\n';
+		}
+		exit(0);
+	}
+
+	int x = n / 9;
+	int y = n % 9;
+
+	if (a[x][y] != 0)
+	{
+		DFS(n + 1);
+	}
+	else
+	{
+		for (int i = 1; i <= 9; i++)
+		{
+			if (cr[x][i] == false && cc[y][i] == false && cs[square(x, y)][i] == false)
+			{
+				cr[x][i] = true; cc[y][i] = true; cs[square(x, y)][i] = true;
+				a[x][y] = i;
+
+				DFS(n + 1);
+
+				a[x][y] = 0;
+				cr[x][i] = false; cc[y][i]= false; cs[square(x, y)][i] = false;
+			}
+		}
+	}
+}
+
+
+int main()
+{
+	//freopen("a.txt", "r", stdin);
+
+	for (int i = 0; i<9; i++) {
+		for (int j = 0; j<9; j++) {
+			cin >> a[i][j];
+			if (a[i][j] != 0) {
+				cr[i][a[i][j]] = true;
+				cc[j][a[i][j]] = true;
+				cs[square(i, j)][a[i][j]] = true;
+			}
+		}
+	}
+
+	DFS(0);
+	
+	return 0;
+}

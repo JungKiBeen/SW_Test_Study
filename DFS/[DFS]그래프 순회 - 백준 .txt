@@ -1,0 +1,63 @@
+#include <stdio.h>
+#define INF 0x7fffffff 		// INT �ִ밪
+
+
+int CNUM;
+int ENUM;
+int map[101 + 10][101 + 10];
+int visited[101 + 10];
+
+
+
+void Input_Data(void)
+{
+	int i, r, c;
+
+	scanf("%d", &CNUM);
+	scanf("%d", &ENUM);
+	for (i = 0; i < ENUM; i++)
+	{
+		scanf("%d %d", &r, &c);
+		map[r][c] = 1;
+		map[c][r] = map[r][c];
+	}
+}
+
+void DFS(int n)
+{
+	int i;
+
+	for (i = 1; i <= CNUM; i++)
+	{
+		if (map[n][i] == 1 && visited[i] == 0)
+		{
+			visited[i] = 1;
+			DFS(i);
+		}
+	}
+}
+
+int cnt_link(void)
+{
+	int i, cnt = 0;
+
+	for (i = 2; i <= CNUM; i++)
+	{
+		if (visited[i] == 1)	cnt++;
+	}
+
+	return cnt;
+}
+
+
+int main(void)
+{
+	Input_Data();
+
+	visited[1] = 1;
+ 	DFS(1);
+
+	printf("%d", cnt_link());
+
+	return 0;
+}

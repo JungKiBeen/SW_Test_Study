@@ -1,0 +1,46 @@
+/*
+	1. bottom-up 방식 구현
+	2. d[i][j] 는 i번째 행렬부터 j번째 행렬까지 최소 곱셈 연산의 수
+	3. k를 i부터 j까지 이동 시킬 때,
+	   d[i][j] = d[i][k] + d[k+1][j] + (a[i][0] * a[j][1] * a[k][1]) 중 최소 값.
+	
+	4. 예외 경우를 따지는 것이 좀 어렵다.. 
+*/
+
+#include<iostream>
+#include<limits>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+int a[555][2];
+long long d[555][555];
+
+
+int main()
+{
+	//freopen("a.txt", "r", stdin);
+	int n;
+	cin >> n;
+
+	for (int i = 0; i < n; i++)
+	{
+		scanf("%d %d", &a[i][0], &a[i][1]);
+	}
+
+	for (int i = n - 1; i >= 0; i--)
+	{
+		for (int j = i + 1; j <= n - 1; j++)
+		{
+			d[i][j] = numeric_limits<long long>::max();
+			for (int k = i; k <= j; k++)
+			{
+				d[i][j] = min(d[i][j], d[i][k] + d[k+1][j] + (a[i][0]*a[j][1]*a[k][1]));
+			}
+		}
+	}
+
+	cout << d[0][n - 1];
+
+	return 0;
+}

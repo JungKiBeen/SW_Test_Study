@@ -1,0 +1,46 @@
+/*
+	1. % 계산이 까다로웠다. mod 연산을 요구할 경우, dp가 갱신되는 모든 부분에 %연산을 해줘야 한다.
+	2. d[n][j] 는 길이가 n이고 끝자리가 k인 오르막의 수
+	3. d[n][j] = sum d[n-1][k]  k is 0 to j 
+*/
+
+
+#include<iostream>
+#include<cstdio>
+using namespace std;
+
+int dp[1000][10];
+
+int main()
+{
+	int n;
+	cin >> n;
+
+	for (int i = 0; i <= 9; i++)
+	{
+		dp[1][i] = 1;
+	}
+
+	for (int i = 2; i <= n; i++)
+	{
+		for (int j = 0; j <= 9; j++)
+		{
+			for (int k = 0; k <= j; k++)
+			{
+				dp[i][j] += dp[i - 1][k];
+				dp[i][j] %= 10007;
+			}
+		}
+	}
+
+	int sol = 0;
+
+	for (int i = 0; i <= 9; i++)
+	{
+		sol += dp[n][i];
+	}
+
+	cout << sol % 10007;
+	
+	return 0;
+}

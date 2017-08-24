@@ -1,0 +1,59 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<vector>
+using namespace std;
+bool sol[50];
+
+void DFS(int n, vector<int> &a, vector<bool> &check, int &k)
+{
+	if (n == 6)
+	{
+		for (int i = 1; i <= 49; i++)
+		{
+			if (sol[i])	printf("%d ", i);
+
+		}
+		printf("\n");
+		return;
+	}
+
+	for (int i = 0; i < k; i++)
+	{
+		if (check[i] == 0)
+		{
+			for (int j = 0; j <= i; j++)	check[j] = true;
+			sol[a[i]] = true;
+			DFS(n + 1, a, check, k);
+			sol[a[i]] = false;
+			for (int j = 0; j <= i; j++)	check[j] = false;
+		}
+	}
+}
+
+int main()
+{
+	//freopen("a.txt", "r", stdin);
+	int k;
+
+	while (true)
+	{
+		memset(sol, 0, sizeof(sol));
+		scanf("%d", &k);
+		if (k == 0)	break;
+
+		vector<int> a(k);
+		vector<bool> check(k);
+
+		for (int i = 0; i < k; i++)
+		{
+			scanf("%d", &a[i]);
+			check[i] = 0;
+		}
+
+		DFS(0,a,check,k);
+		printf("\n");
+	}
+
+	return 0;
+}

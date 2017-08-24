@@ -1,0 +1,70 @@
+#include <iostream>
+#include <algorithm>
+#include<string>
+#include<list>
+#include<queue>
+#include<vector>
+
+
+#include<cctype>
+#include <ctime>
+#include <cstdlib>
+#include<cstring>
+#include<climits>
+
+using namespace std;
+
+int sol(vector<int> &v, int left, int right)
+{
+	if (left == right)	return v[left];
+
+	int mid = (left + right) / 2;
+	int ret = max(sol(v, left, mid), sol(v, mid + 1, right));
+
+	int l = mid, r = mid + 1;
+	int height = min(v[l], v[r]);
+	ret = max(ret, height * 2);
+	while (left < l || r < right)
+	{
+		if (r < right && (l == left || v[r + 1] > v[l - 1]))
+		{
+			r++;
+			height = min(height, v[r]);
+		}
+
+		else
+		{
+			l--;
+			height = min(height, v[l]);
+		}
+
+		ret = max(ret, height*(r - l + 1));
+	}
+	return ret;
+}
+
+int main(void)
+{
+	std::ios_base::sync_with_stdio(false);
+	freopen("input.txt", "r", stdin);
+	int c, n;
+	vector<int> v;
+	
+	v.reserve(20000);
+	cin >> c;
+	while (c--)
+	{
+		v.clear();
+		cin >> n;
+		for (int i = 0; i < n; i++)
+		{
+			int temp;
+			cin >> temp;
+			v.push_back(temp);
+		}
+
+		cout << sol(v,0, v.size() - 1) << "\n";
+	}
+
+	return 0;
+}

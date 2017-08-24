@@ -1,0 +1,50 @@
+#include <stdio.h>
+
+int TN, N, B, SMIN; int H[21 + 10]; int SOL[1000000];
+
+void Input_Data(void)
+{
+	int i;
+	SMIN = 0; N = 0; B = 0;
+	for (i = 0; i < 32; i++) H[i] = 0;
+
+	scanf("%d", &N); scanf("%d", &B);
+	
+	for (i = 1; i <= N; i++)
+	{
+		scanf("%d", &H[i]); 	SMIN += H[i];
+	}
+}
+
+
+void DFS(int n, int S)
+{
+	if (S >= SMIN)	return;
+	if (n > N)
+	{
+		if (S >= B && S < SMIN)	SMIN = S;
+		return;
+	}
+
+	DFS(n + 1, S + H[n]);
+	DFS(n + 1, S);
+}
+
+int main(void)
+{
+	int i;
+	scanf("%d", &TN);
+
+	for (i = 0; i < TN; i++)
+	{
+		Input_Data();
+		DFS(1, 0);
+		SOL[i] = SMIN - B;
+	}
+
+	for (i = 0; i < TN; i++)
+	{
+		printf("%d\n", SOL[i]);
+	}
+	return 0;
+}

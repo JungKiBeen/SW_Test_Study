@@ -1,0 +1,38 @@
+/*1분 10초 소요*/
+/* n, t, d 사이의 관계를 따지는 것이 힘들었음 */
+
+#include <stdio.h>
+
+int N, LMT, MINT = 0x7fffffff; int D[51 + 10], RT[50 + 10];
+
+void InputData()
+{
+	int i;
+	scanf("%d", &LMT); 
+	scanf("%d", &N);
+	for (i = 1; i <= N + 1; i++)	scanf("%d", &D[i]);
+	for (i = 1; i <= N; i++)	scanf("%d", &RT[i]);
+}
+
+void DFS(int n, int t, int d)
+{
+	if (t > MINT)	return;
+	if (d > LMT)	return;
+	if (n > N)
+	{
+		if (t < MINT)	MINT = t;
+		return;
+	}
+	
+
+	DFS(n + 1, t + RT[n], D[n+1]);	//	 Y
+	DFS(n + 1, t, d + D[n+1]);	// N
+}
+
+int main()
+{	
+	InputData();
+	DFS(1, 0, D[1]);
+	printf("%d", MINT);
+	return 0;
+}

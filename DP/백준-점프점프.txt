@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+
+using namespace std;
+
+long long d[10000];
+
+int main(void)
+{
+	int n;
+
+	scanf("%d", &n);
+	vector<int> A(n+1);
+	vector<long long> d(n + 1);
+
+	for (int i = 1; i <= n; i++)
+	{
+		scanf("%d", &A[i]);
+		d[i] = INT_MAX;
+	}
+	
+	d[1] = 0;
+	for (int i = 1; i <= n; i++)
+	{
+		int k = i; // k = 3
+		while (k <= (i + A[i]) && k <= n)  // k <= 4 
+		{
+			if (d[k] > (d[i] + 1))		d[k] = (d[i] + 1); // d[4] = 1 + 1;
+			k++;
+		}
+	}
+
+	if (d[n] == INT_MAX)	printf("%d", -1);
+	else printf("%lld", d[n]);
+
+	return 0;
+}

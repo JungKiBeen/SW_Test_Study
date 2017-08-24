@@ -1,0 +1,47 @@
+/*
+	1. top-down 으로 구현
+	2. d[i] 는 n을 1로 만드는데 드는 연산의 최소 횟수로 정의.
+	3. 나눠떨어지는 경우에만, 나눈다는 것이 중요함.
+*/
+
+#include<iostream>
+#include<limits>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+int d[1000000];
+
+
+int solve(int n)
+{
+	if (n == 1)	return 0;
+
+
+	if (d[n] > 0)	return d[n];
+
+	d[n] = solve(n - 1) + 1;
+
+	if (n % 2 == 0)
+	{
+		d[n] = min(d[n], solve(n / 2)+1);
+	}
+
+	if (n % 3 == 0)
+	{
+		d[n] = min(d[n], solve(n / 3)+1);
+	}
+
+	return d[n];
+}
+
+int main()
+{
+	//freopen("a.txt", "r", stdin);
+	int n;
+	cin >> n;
+
+	cout << solve(n);
+
+	return 0;
+}

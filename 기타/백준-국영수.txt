@@ -1,0 +1,73 @@
+#include <iostream>
+#include <stdio.h>
+
+#include<vector>
+#include<algorithm>
+#include <string>
+#include<tuple>
+
+using namespace std;
+
+struct student
+{
+	string name;
+	int a;
+	int b;
+	int c;
+};
+
+bool cmp(const student &a, const student &b)
+{
+	if (a.a != b.a)
+	{
+		return a.a > b.a;
+	}
+
+	else
+	{
+		if (a.b != b.b)
+		{
+			return a.b < b.b;
+		}
+
+
+		else
+		{
+			if (a.c != b.c)
+			{
+				return a.c > b.c;
+			}
+
+			else
+			{
+				return a.name < b.name;
+			}
+		}
+	}
+}
+
+
+int main() 
+{
+//	freopen("a.txt", "r", stdin);
+	int n;
+
+	cin >> n;
+	vector<student> a(n);
+
+
+	for (int i = 0; i < n; i++)
+	{
+		cin >> a[i].name;
+		scanf("%d %d %d", &a[i].a, &a[i].b, &a[i].c);
+	}
+
+	sort(a.begin(), a.end(), cmp);
+
+	for (int i = 0; i < (int)a.size(); i++)
+	{
+		cout << a[i].name << '\n';
+	}
+
+	return 0;
+}

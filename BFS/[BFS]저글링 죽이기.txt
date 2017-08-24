@@ -1,0 +1,82 @@
+#include <stdio.h>
+
+typedef struct 
+{
+	int r; int c;
+	int s;
+} elem;
+
+
+elem que[100*100*100];
+int ep, dp;
+
+void enq(int r, int c)
+{
+	que[ep].r = r;		que[ep].c = c;	ep++;
+}
+
+int deq(elem* a)
+{
+	if (ep == dp) return 0;
+	*a = que[dp];		dp++;
+	return 1;
+}
+
+int COL, ROW, EX, EY;	int map[100 + 10][100 + 10];	int visited[100 + 10][100 + 10];
+int dr[] = { -1, 1, 0, 0 };	int dc[] = { 0, 0, -1, 1 };
+int MAXS, RC;
+
+void InputData()
+{
+	int i, j;
+	scanf("%d %d", &COL, &ROW);
+	for (i = 1; i <= ROW; i++)
+	{
+		for (j = 1; j <= COL; j++)
+			scanf("%1d", &map[i][j]);
+
+	}
+	scanf("%d %d", &EY, &EX);
+
+}
+
+void BFS()
+{
+	int i, j, rr, cc; elem q;
+	enq(EX, EY);
+	visited[EX][EY] = 3;
+
+	while (deq(&q))
+	{
+		if (visited[q.r][q.c] > MAXS)	MAXS = visited[q.r][q.c];
+
+		for (i = 0; i < 4; i++)
+		{
+			rr = q.r + dr[i];	cc = q.c + dc[i];
+
+			if (rr < 1 || rr > ROW || cc < 1 || cc > COL)	continue;
+
+			if (visited[rr][cc] == 0 && map[rr][cc] == 1)
+			{
+				visited[rr][cc] = visited[q.r][q.c] + 1;
+				enq(rr, cc);
+			}
+		}
+	}
+
+	for (i = 1; i <= ROW; i++)
+	{
+		for (j = 1; j <= COL; j++)
+			if (map[i][j] == 1 && visited[i][j] == 0)	RC++;
+	}
+}
+
+int main(void)
+{
+	InputData();
+	BFS();
+	printf("%d\n", MAXS);
+	printf("%d", RC);
+	return 0;
+}
+

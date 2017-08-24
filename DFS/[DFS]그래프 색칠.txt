@@ -1,0 +1,81 @@
+#define INF 0x7fffffff 		// INT 최대값
+
+
+int N,M;				// 배열의 크기제한
+int map[1+12+10][1+12+10];
+int printed[1+12+10];
+
+int dr[] = {-1, 1, 0, 0}	// 변위 테이블
+int dc[] = {0, 0, -1, 1}
+
+
+
+void Input_Data(void)
+{
+	int i, j;
+
+	scanf("%d %d", &N, &M);
+	for(i = 1; i<= N; i++)
+	{
+		for(j = 1; j <= i; j++)				/* triangular matrix */	
+		
+		{
+			scanf("%d", &map[i][j]);
+			map[j][i] = map[i][j];			// 무방향성 그래프
+		}
+	}
+	
+}
+
+
+int Check_Color(int n, int col)
+{
+	int i;
+	for(i = 1; i < n ; i++)
+	{
+		if(map[n][i] && painted[i] == color) return 0;			// 인접해있고 그 색이 칠해져있다면 
+	}
+	
+	return 1;
+}
+
+
+int Paint_Graph(int n)
+{
+	int i;
+
+	if(n > N) return 1;			// 모든 노드 색 배정 완료
+ 
+	for(i = 1; i <= M ; i++)		// 1부터 M 까지 색칠 시도
+	{
+		if(Check_Color(n, i))		// 인접한 노드와 색이 겹치는 지 확인
+		{
+			painted[n] = i;
+			if(Paint_Graph(n+1)) return 1;
+		}
+	}		
+
+	return 0;
+}
+
+
+int main(void)
+{
+	int i;
+
+	Input_Data();
+
+	if(Paint_Graph(1))		// 1번 노드부터 색칠하기 시작
+	{
+		for(i = 0 ; i <= N; i++)	printf("%d ", painted[i]);		
+	}
+
+	else
+	{
+		printf("-1");
+	}
+
+
+
+	return 0;
+}

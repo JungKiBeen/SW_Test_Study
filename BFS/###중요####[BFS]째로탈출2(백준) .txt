@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include<math.h>
+
+typedef struct
+{
+	int rx, ry, bx, by, t;
+
+} qnode;
+
+qnode q[40000];	int ep, dp;
+
+int N, M, RX, RY, BX, BY;
+char map[15][15];	int visit[15][15][15][15];
+int dr[] = { 1,0,-1,0 };	int dc[] = { 0,1,0,-1 };
+
+void InputData()
+{
+	int i,j;
+	scanf("%d %d", &N, &M);
+	for (i = 1; i <= N; i++)
+	{
+		scanf("%s", &map[i][1]);
+		for (j = 1; j <= M; j++)
+		{
+			if (map[i][j] == 'B') { BX = i; BY = j; }
+			if (map[i][j] == 'R') { RX = i; RY = j; }
+		}
+	}
+}
+
+int BFS()
+{
+	int i;
+	int rx, ry, bx, by;	int tx, ty, sx, sy;	int t;
+
+	q[ep].rx = RX;	q[ep].ry = RY;	q[ep].bx = BX;	q[ep].by = BY;	q[ep++].t = 0;
+	visit[RX][RY][BX][BY] = 1;
+
+	while (ep > dp)
+	{
+		rx = q[dp].rx;			ry = q[dp].ry;			bx = q[dp].bx;			by = q[dp].by;	t = q[dp++].t;
+	
+
+		if (t > 10)	return -1;
+		if (map[rx][ry] == 'O' && (map[rx][ry] != map[bx][by]) )	return t;
+
+		for (i = 0; i <= 3; i++)
+		{
+			tx = rx; ty = ry; sx = bx; sy = by;
+
+			while (map[tx + dr[i]][ty + dc[i]] != '#' && map[tx][ty] != 'O')
+			{
+				tx += dr[i];	ty += dc[i];
+			}
+			
+			while (map[sx + dr[i]][sy + dc[i]] != '#' && map[sx][sy] != 'O')
+			{
+				sx += dr[i];	sy += dc[i];
+			}
+
+			if (map[sx][sy] == 'O')	continue;
+
+			if ((tx == sx) && (ty == sy))
+			{
+				
+				if (abs(tx - rx) + abs(ty - ry) > abs(sx - bx) + abs(sy - by))
+				{
+					tx -= dr[i];	ty -= dc[i];
+				}
+
+				else
+				{
+					sx -= dr[i];	sy -= dc[i];
+				}
+			}
+
+			if (visit[tx][ty][sx][sy] == 0)
+			{
+				q[ep].rx = tx;	q[ep].ry = ty;	q[ep].bx = sx;	q[ep].by = sy;	q[ep++].t = t + 1;
+				visit[tx][ty][sx][sy] = 1;
+			}
+
+		}// for
+	}
+	return -1;
+}
+
+int main(void)
+{
+	//freopen("input.txt", "r", stdin);
+	InputData();
+	printf("%d", BFS());
+}
+
+
+
+
+

@@ -1,0 +1,54 @@
+#include <iostream>
+#include <algorithm>
+#include<string>
+#include<cctype>
+#include <ctime>
+#include <cstdlib>
+#include<cstring>
+using namespace std;
+
+
+string _itoa(int num)
+{
+	string str;
+
+	if (num == 0)
+	{
+		return "0";
+	}
+
+	bool is_plus = true;
+	if (num < 0)
+	{
+		is_plus = false;
+		num = num * (-1);
+	}
+
+	while (num > 0)
+	{
+		char c = (num % 10) + '0';
+		str.push_back(c);
+		num /= 10;
+	}
+
+	if (!is_plus)
+	{
+		str.push_back('-');
+	}
+
+	reverse(str.begin(), str.end());
+	return str;
+}
+
+int main(void)
+{
+	while(true)
+	{
+		int num;
+		cout << "정수 입력 : ";
+		cin >> num;
+		cout << _itoa(num) << endl;
+	}
+
+	return 0;
+}

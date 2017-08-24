@@ -1,0 +1,46 @@
+/*
+	1. d[n]은 n개의 붕어빵으로 얻을 수 있는 최대 이익
+
+	2. d[i] = d[i-j] + p[j];
+	   d[4] = d[3] + p[1] or d[2] + p[2] or d[1] + a[3] or d[0] + a[4] 로 관계를 찾을 수 있다.
+
+	3. for문의 범위를 노트에 가능한 적자.
+
+	4. 시간복잡도는 O(N2) 이다. 
+*/
+
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+int d[1111];
+int p[1111];
+int main()
+{
+	//freopen("a.txt", "r", stdin);
+	int n;
+	cin >> n;
+
+	for (int i = 1; i <= n; i++)
+	{
+		scanf("%d",&p[i]);
+	}
+
+	
+	for (int i = 1; i <= n; i++)
+	{
+		for (int j = 1 ; j<=i; j++)
+		{
+			if (d[i-j] + p[j]; > d[i])
+			{
+				d[i] = d[i-j] + p[j];
+			}
+		}
+	}
+	
+	cout << d[n];
+	
+	return 0;
+}

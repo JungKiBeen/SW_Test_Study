@@ -1,0 +1,67 @@
+#include <stdio.h>
+#define ABS(x) ((x) > 0 ? (x) : -(x))
+
+int CHANNEL, M;
+int btn[10];	// 1은 고장남을 의미
+
+int possible(int cur)
+{
+	int len = 0;
+
+	if (cur == 0)	return ((btn[0]) ? -1 : 1);
+	while (cur > 0)
+	{
+		if (btn[cur % 10])	return -1;
+
+		cur /= 10;
+		len++;
+	}
+
+	return len;
+}
+
+int main()
+{
+	int i, temp, len, min, min_len, sol1, sol2;
+
+	freopen("input.txt", "r", stdin);
+	scanf("%d", &CHANNEL);
+	scanf("%d", &M);
+
+	for (i = 0; i < M; i++)
+	{
+		scanf("%d", &temp);
+		btn[temp] = 1;
+	}
+
+	min = ABS(100 - CHANNEL);	min_len = -1;
+	for (i = 0; i <= 1000000; i++)
+	{
+		len = possible(i);
+
+		if (len == -1)	continue;
+		temp = ABS(i - CHANNEL);
+
+		if (temp < min)
+		{
+			min = temp;
+			min_len = len;
+		}
+	}
+
+
+	sol1 = min + min_len;
+	sol2 = ABS(100 - CHANNEL);
+
+
+	if (min_len == -1)
+	{
+		printf("%d", sol2);
+		return 0;
+	}
+
+	sol1 = (sol1 < sol2) ? sol1 : sol2;
+
+	printf("%d", sol1);
+
+}

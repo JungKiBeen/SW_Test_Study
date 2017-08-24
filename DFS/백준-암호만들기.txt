@@ -1,0 +1,76 @@
+/*
+	외부 배열 out, visit 을 수정하는 부분이 핵심이다.
+*/
+
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<algorithm>
+using namespace std;
+vector<char> alpha;		vector<char> out;	 bool visit[15];
+int l, c;
+
+void DFS(int n, int ja, int mo)
+{
+	if (ja == l || (mo == l - 1))	return;
+
+	if (n >= l)
+	{
+		for (int i = 0; i < l; i++)
+		{
+			printf("%c", out[i]);
+		}
+		printf("\n");
+		
+		return;
+	}
+
+	for (int i = 0; i < c; i++)
+	{
+		if (visit[i] == false)
+		{
+			for (int j = i; j >= 0; j--)
+			{
+				visit[j] = true;
+			}
+
+			out.push_back(alpha[i]);
+			if (alpha[i] == 'a' || alpha[i] == 'e' || alpha[i] == 'i' || alpha[i] == 'o' || alpha[i] == 'u')
+			{	
+				DFS(n + 1, ja, mo+1);
+			}
+			else
+			{
+				DFS(n + 1, ja+1, mo);
+			}
+			
+			out.pop_back();
+
+			for (int j = i; j >= 0; j--)
+			{
+				visit[j] = false;
+			}
+		}
+	}
+}
+
+
+int main()
+{
+	//freopen("a.txt","r", stdin);
+
+	cin >> l >> c;
+	alpha.resize(c);
+
+
+	for (int i = 0; i < c; i++)
+	{
+		scanf(" %c", &alpha[i]);
+	}
+
+	sort(alpha.begin(), alpha.end());
+
+	DFS(0, 0 , 0);
+
+	return 0;
+}

@@ -1,0 +1,40 @@
+
+/*
+
+	1) 2xn을 채우는 방법은 세로블록을 놓거나, 가로 블록 두개를 겹쳐서 놓는 방법이 있다.
+
+	즉, d[n-1] 에 세로블록을 놓는 방법과, d[n-2]에 가로 블록 두개를 겹쳐 놓는 방법이 있다.
+	 
+	이를 수식으로 나타내면 d[n] = d[n-1] + d[n-2]이다.
+
+	2) 마지막 출력결과에 % 10007을 적용하면 오류가 나온다.
+	
+	optimal substructure 특성 상 전체 문제에 적용되는 룰은 모든 서브 룰에 동잃하게 적용되야한다.
+
+*/
+
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+int d[1111];
+
+int main()
+{
+	int n;
+	cin >> n;
+
+	d[0] = 1;
+	d[1] = 1;
+
+	for (int i = 2; i <= n; i++)
+	{
+		d[i] = d[i - 1] + d[i - 2];
+		d[i] = d[i] % 10007;
+	}
+
+	cout << d[n];
+
+	return 0;
+}

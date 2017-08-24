@@ -1,0 +1,103 @@
+#include <stdio.h>
+
+#define INF 0x7fffffff 		// INT �ִ밪
+#define MAXQ 1000100
+
+typedef struct 
+{
+	int f;
+	int c;
+}elem;
+
+elem Que[MAXQ];
+int dp, ep;
+elem q;
+
+
+int F,S,G,U,D;
+
+int visited[1000000 + 100];
+
+int dr[] = { -1, 1};
+	
+int Enq(int f, int c)
+{
+	if (ep == MAXQ)		return 0;
+
+	Que[ep].f = f;
+	Que[ep].c = c;
+	ep++;
+
+	return 1;
+}
+
+int Deq(elem* e)
+{
+	if (ep == dp)	return 0;
+
+	*e = Que[dp++];
+	return 1;
+}
+
+int BFS(void)
+{
+	int i;
+	elem n;
+	
+	Enq(S, 0);
+	visited[S] = 1;
+
+	while (Deq(&q))
+	{
+		if (q.f == G)	return 1;
+
+
+		for (i = 0; i < 2; i++)
+		{
+			n.f = q.f + dr[i];
+			n.c = q.c + 1;
+
+			if (visited[n.f] == 0 && n.f >= 1 && n.f <= F)
+			{
+				visited[n.f] = 1;
+				Enq(n.f, n.c);
+			}
+		}
+	}
+
+	return 0;
+}
+
+
+
+void Input_Data(void)
+{
+	scanf("%d", &F);
+	scanf("%d", &S);
+	scanf("%d", &G);
+	scanf("%d", &U);
+	scanf("%d", &D);
+}
+
+
+
+int main(void)
+{
+	Input_Data();
+
+	dr[0] *= D;
+	dr[1] *= U;
+
+	if (BFS())
+	{
+		printf("%d", q.c);
+	}
+
+	else
+	{
+		printf("use the stairs");
+	}
+
+
+	return 0;
+}

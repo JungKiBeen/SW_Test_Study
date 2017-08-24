@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <string.h>
+
+int S;
+
+void add(int x)
+{
+	S = S | (1 << x);
+}
+
+void rmv(int x)
+{
+	S = S & ~(1 << x);
+}
+
+void check(int x)
+{
+	int out = (S & (1 << x)) ? 1 : 0;
+	printf("%d\n", out);
+}
+
+void toggle(int x)
+{
+	S = S ^ (1 << x);
+}
+
+void all()
+{
+	S = (1 << 22) - 2;
+}
+
+void empty()
+{
+	S = 0;
+}
+
+int main(void)
+{
+	char opr[100];	int operand;
+	int m;
+
+	freopen("input.txt", "r", stdin);
+	
+	scanf("%d", &m);
+	
+	while (m--)
+	{
+		scanf("%s", opr);
+
+		if (!strcmp(opr, "check"))
+		{
+			scanf("%d", &operand);
+			check(operand);
+		}
+
+		else if(!strcmp(opr, "add"))
+		{
+			scanf("%d", &operand);
+			add(operand);
+		}
+
+		else if (!strcmp(opr, "remove"))
+		{
+			scanf("%d", &operand);
+			rmv(operand);
+		}
+
+		else if (!strcmp(opr, "toggle"))
+		{
+			scanf("%d", &operand);
+			toggle(operand);
+		}
+
+		else if (!strcmp(opr, "all"))
+		{
+			all();
+		}
+
+		else if (!strcmp(opr, "empty"))
+		{
+			empty();
+		}
+
+	}
+
+
+	return 0;
+}

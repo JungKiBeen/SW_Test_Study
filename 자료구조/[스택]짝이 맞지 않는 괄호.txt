@@ -1,0 +1,64 @@
+#include <iostream>
+#include <algorithm>
+#include<string>
+#include<list>
+#include<queue>
+#include<vector>
+#include<stack>
+
+#include<cctype>
+#include <ctime>
+#include <cstdlib>
+#include<cstring>
+#include<climits>
+using namespace std;
+
+bool solve(string& str)
+{
+	const string opening("({["), closing(")}]");
+	stack<char> st;
+	
+	for (int i = 0; i < str.size(); i++)
+	{
+		if (opening.find(str[i]) != std::string::npos)
+		{
+			st.push(str[i]);
+		}
+
+		else
+		{
+			if (st.empty()) return false;		// ()) 경우
+
+			if (opening.find(st.top()) != closing.find(str[i]))	// (]) 경우
+			{
+				return false;
+			}
+			st.pop();
+		}
+	}
+	return st.empty();	// ()( 경우
+}
+
+int main(void)
+{
+	std::ios_base::sync_with_stdio(false);
+	freopen("input.txt", "r", stdin);
+
+	stack<char> st;
+	int c;
+	cin >> c;
+
+	while (c--)
+	{
+		string str;
+		cin >> str;
+
+		if (solve(str))
+		{
+			printf("YES\n");
+		}
+		else printf("NO\n");
+	}
+
+	return 0;
+}

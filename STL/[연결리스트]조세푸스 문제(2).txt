@@ -1,0 +1,51 @@
+#include <iostream>
+#include <algorithm>
+#include<string>
+#include<list>
+
+
+#include<cctype>
+#include <ctime>
+#include <cstdlib>
+#include<cstring>
+#include<climits>
+
+using namespace std;
+
+
+int main(void)
+{
+	list<int> ls;
+	int c, n, k;
+	cin >> c;
+
+	while (c--)
+	{
+		cin >> n >> k;
+		ls.clear();
+
+		for (int i = 1; i <= n; i++)
+		{
+			ls.push_back(i);
+		}
+
+		list<int> ::iterator kill = ls.begin();
+		while (ls.size() > 2)
+		{
+			kill = ls.erase(kill);
+			if (kill == ls.end())
+				kill = ls.begin();
+
+			for (int i = 0; i < (k - 1) % (n-1); i++)
+			{
+				kill++;
+				if (kill == ls.end())
+					kill = ls.begin();
+			}
+		}
+	
+		cout << ls.front() << " " << ls.back() << endl;
+	}
+
+	return 0;
+}

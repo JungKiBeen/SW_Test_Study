@@ -1,0 +1,79 @@
+#include<iostream>
+#include<stdio.h>
+#include<map>
+#include<functional>
+#define N 1322		// N화의 화폐단위
+
+using namespace std;
+
+int main()
+{
+	map<int, int, greater<int>> sol, m;
+
+	int money = 1000000;	//"처음 100만원 소유"
+
+							/* sol테이블 초기화  */
+	sol[100] = 4;			// "100N 은 4장, 50N 은 4장만 환전하고 싶다"를 반영
+	sol[50] = 4;
+	sol[20] = 0;			// "100N 은 4장, 50N 은 4장만 환전하고 싶다"를 반영
+	sol[10] = 0;
+	sol[5] = 0;
+	sol[1] = 0;
+	money -= 100 * N * 4;
+	money -= 50 * N * 4;
+
+	/* m테이블 초기화  */
+	m[20] = 0;
+	m[10] = 0;
+	m[5] = 0;
+	m[1] = 20;			// "1N 은 20장 이상 환전하고 싶다" 를 반영
+	money -= 1 * N * 20;
+
+
+	/* 20N부터 1N까지 라운드로빈(화폐단위별 순차적으로 1장씩)으로 환전 */
+	auto it = m.begin();
+	while (true)
+	{
+		int xN = it->first;
+
+		/* 특정단위 추가하여 100만원이 넘으면 그 단위 제외하고 다시 라운드로빈*/
+		if ((money - xN * N) < 0)
+		{
+			auto temp = it;			// erase를 위한 temp 이터레이터 생성
+			sol[xN] = m[xN];		// sol테이블에 값 반영
+			it++;
+			if (it == m.end())	it = m.begin();
+
+			m.erase(temp);			// 단위 제외 (m테이블에서 삭제)
+			continue;
+
+		}
+
+		m[xN]++;
+		money -= xN * N;
+
+		/* 우리돈 2,000원 이하 일 경우 m테이블의 모든 값을 sol 테이블로 옮기고 라운드로빈을 종료*/
+		if (money <= 2000)
+		{
+			for (it = m.begin(); it != m.end(); it++)
+			{
+				sol[it->first] = m[it->first];
+			}
+			
+			sol[xN] = m[xN];
+			break;
+		}
+
+		it++;
+		if (it == m.end())	it = m.begin();		//이터레이터가 끝에 도달할 경우, 다시 처음으로 초기화
+	}
+
+	for (it = sol.begin(); it != sol.end(); it++)
+	{
+		printf("%dN : %d장\n", it->first, it->second);
+	}
+
+	printf("\n잔돈 : %d원", money);
+
+	return 0;
+}

@@ -1,0 +1,27 @@
+#include <stdio.h>
+int W, H, P, Q, t;
+int dir[] = { 1, 1 };
+
+void InputData()
+{
+	scanf("%d %d", &W, &H);
+	scanf("%d %d", &P, &Q);
+	scanf("%d", &t);
+}
+
+int main(void)
+{
+	int i, pp, qq;
+	InputData();
+	for (i = 1; i <= t; i++)
+	{
+		pp = P + dir[0];	qq = Q + dir[1];
+		
+		if (pp < 0 || pp > W)	dir[0] = dir[0] * (-1);
+		if (qq < 0 || qq > H)	dir[1] = dir[1] * (-1);
+
+		P = P + dir[0];	Q = Q + dir[1];
+	}
+	printf("%d %d", P, Q);
+	return 0;
+}

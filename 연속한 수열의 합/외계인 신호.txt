@@ -1,0 +1,95 @@
+#include <iostream>
+#include <algorithm>
+#include<string>
+#include<list>
+#include<queue>
+#include<vector>
+#include<stack>
+
+#include<cmath>
+#include<cctype>
+#include <ctime>
+#include <cstdlib>
+#include<cstring>
+#include<climits>
+using namespace std;
+
+struct Signal
+{
+	unsigned seed;
+	Signal() : seed(1983) {}
+
+	unsigned next_signal()
+	{
+		unsigned ret = seed;
+		seed = (seed * 214013u + 2531011u);
+
+		return ret % 10000 + 1;
+	}
+};
+
+int solve(int k, int n)
+{
+	queue<int> que;
+	Signal mksg;
+	int ret = 0;
+
+	que.push(mksg.next_signal());
+	int sum = que.front();
+
+	int right = 1, left = 1;
+
+	while (right <= n)
+	{
+		if (sum < k)
+		{
+			right++;
+			int new_sig = mksg.next_signal();
+			que.push(new_sig);
+			sum += new_sig;
+		}
+
+		else if (sum >= k)
+		{
+			if (sum == k) ret++;
+
+			if (right == left)
+			{
+				right++;
+				int new_sig = mksg.next_signal();
+				que.push(new_sig);
+				sum += new_sig;
+			}
+			else
+			{
+				left++;
+				sum -= que.front();
+				que.pop();
+			}
+		}
+	}
+
+	return ret;
+}
+
+int main(void)
+{
+	std::ios_base::sync_with_stdio(false);
+	time_t start, end;
+
+	freopen("input.txt", "r", stdin);
+	int c;
+	cin >> c;
+	
+	start = clock();
+	while (c--)
+	{
+		int k, n;
+		cin >> k >> n; 
+		cout << solve(k, n) << "\n";
+	}
+	end = clock();
+	cout << (double)(end - start) / CLOCKS_PER_SEC << endl;
+
+	return 0;
+}

@@ -1,0 +1,71 @@
+
+#include <iostream>
+#include<stdio.h>
+#include<vector>
+#include<algorithm>
+
+using namespace std;
+
+int cost[10 + 1][10 + 1];
+
+int calc(vector<int> &a)
+{
+	int i, temp, sum = 0;
+
+	for (i = 1; i < a.size(); i++)
+	{
+		temp = cost[a[i - 1]][a[i]];
+
+		if (temp == 0)
+		{
+			return -1;
+		}
+
+		sum += temp;
+	}
+	temp = cost[a[i - 1]][a[0]];
+	if (temp == 0)
+	{
+		return -1;
+	}
+
+	sum += temp;
+
+	return sum;
+}
+
+int main()
+{
+	//freopen("a.txt", "r", stdin);
+	int n;
+	cin >> n;
+
+	for (int i = 1; i <= n; i++)
+	{
+		for (int j = 1; j <= n; j++)
+		{
+			cin >> cost[i][j];
+		}
+	}
+
+	vector<int> a(n);
+
+	for (int i = 0; i < n; i++)
+	{
+		a[i] = i + 1;
+	}
+
+	int sol = calc(a);
+	next_permutation(a.begin(), a.end());
+	do
+	{
+		int temp = calc(a);
+		
+		if (temp == -1)	continue;
+
+		sol = min(temp, sol);
+
+	} while (next_permutation(a.begin()+1, a.end()));
+
+	cout << sol;
+}

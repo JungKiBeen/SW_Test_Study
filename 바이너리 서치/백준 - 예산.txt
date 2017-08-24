@@ -1,0 +1,96 @@
+/*
+
+sum의 결과와 m을 비교하면서 예산 상한액을 조정한다
+
+*/
+
+
+
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+int yesan[10000];	int n, m;
+long long sum(int han)
+{
+	long long sum = 0;
+	for (int i = 0; i < n; i++)
+	{
+		if (yesan[i] <= han)
+		{
+			sum += yesan[i];
+		}
+
+		else
+		{
+			sum += han;
+		}
+	}
+
+	return sum;
+}
+
+
+
+int bsearch(int l, int u)
+{
+	int mid = (l + u) / 2;
+
+	if (l > u)
+	{
+		while (l >= 0)
+		{
+			if (sum(l) <= m)	return l;
+			l--;
+		}
+	}
+
+	long long s = sum(mid);
+
+	if (s > m)
+	{
+		return bsearch(l, mid-1);
+	}
+
+	else if (s == m)
+	{
+		return mid;
+	}
+
+	else
+	{
+		return bsearch(mid+1, u);
+	}
+}
+
+
+
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	//freopen("a.txt", "r", stdin);
+	cin >> n;
+
+	long long s = 0;
+	int high = -1;
+	for (int i = 0; i < n; i++)
+	{
+		cin >> yesan[i];
+		s += yesan[i];
+		high = max(yesan[i], high);
+	}
+	cin >> m;
+	
+	if (s <= m)
+	{
+		cout << high;
+	}
+
+	else
+	{
+		cout << bsearch(0, high);
+	}
+
+	return 0;
+}
